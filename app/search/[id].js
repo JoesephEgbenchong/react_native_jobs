@@ -8,7 +8,8 @@ import axios from 'axios'
 
 import { ScreenHeaderBtn, NearbyJobCard } from '../../components'
 import { COLORS, icons, SIZES } from '../../constants'
-//probable styles to be imported
+
+import styles from '../../styles/search'
 
 import {RAPID_API_KEY} from '@env';
 
@@ -83,7 +84,61 @@ const JobSearch = () => {
         }} 
       />
 
-      
+      <FlatList 
+        data={searchResult}
+        renderItem={({ item }) => (
+          <NearbyJobCard 
+            job={item}
+            handleNavigate={() => router.push(`/job-details/${item.job_id}`)}
+
+          />
+        )}
+        keyExtractor={(item) => item.job_id}
+        contentContainerStyle={{ padding: SIZES.medium, rowGap: SIZES.medium }}
+        ListHeaderComponent={() => (
+            <>
+                <View style={styles.container}>
+                    <Text style={styles.searchTitle}>{params.id}</Text>
+                    <Text style={styles.noOfSearchedJobs}>Job Opportunities</Text>
+                </View>
+                <View style={styles.loaderContainer}>
+                    {searchLoader ? (
+                        <ActivityIndicator size='large' color={COLORS.primary} />
+                    ) : searchError && (
+                        <Text>Oops something went wrong</Text>
+                    )}
+                </View>
+            </>
+        )}
+        ListFooterComponent={() => (
+          <View style={styles.footerContainer}>
+              <TouchableOpacity
+                  style={styles.paginationButton}
+                  onPress={() => handlePagination('left')}
+              >
+                  <Image
+                      source={icons.chevronLeft}
+                      style={styles.paginationImage}
+                      resizeMode="contain"
+                  />
+              </TouchableOpacity>
+              <View style={styles.paginationTextBox}>
+                  <Text style={styles.paginationText}>{page}</Text>
+              </View>
+              <TouchableOpacity
+                  style={styles.paginationButton}
+                  onPress={() => handlePagination('right')}
+              >
+                  <Image
+                      source={icons.chevronRight}
+                      style={styles.paginationImage}
+                      resizeMode="contain"
+                  />
+              </TouchableOpacity>
+          </View>
+      )}
+    />
+
     </SafeAreaView>
   )
 }
