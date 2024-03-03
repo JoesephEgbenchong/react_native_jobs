@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     marginTop: SIZES.large,
+    marginBottom: SIZES.large,
     height: 50,
   },
   searchWrapper: {
